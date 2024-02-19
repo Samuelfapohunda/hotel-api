@@ -1,0 +1,87 @@
+paths:
+  /api/v1/rooms/{roomId}/update:
+    patch:
+      summary: Update room details of a hotel
+      description: Update an existing room within a hotel.
+      tags:
+        - Room
+      parameters:
+        - in: path
+          name: roomId
+          required: true
+          schema:
+            type: string
+          description: The ID of the room to update.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                available:
+                  type: boolean
+                cost:
+                  type: number
+                roomType:
+                  type: string
+      responses:
+        '200':
+          description: Room updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates if the update was successful.
+                    example: true
+                  room:
+                    $ref: '#/definitions/Room'
+                    description: The updated room object.
+                  message:
+                    type: string
+                    description: A message indicating the success of the update.
+                    example: Room details updated successfully
+        '404':
+          description: Room or Hotel not found.
+          content:
+            application/json:
+              example:
+                success: false
+                error: Room not found
+        '422':
+          description: Failed to update room details.
+          content:
+            application/json:
+              example:
+                success: false
+                error: Failed to update room
+
+definitions:
+  Room:
+    type: object
+    properties:
+      _id:
+        type: string
+        description: The unique identifier of the room.
+      title:
+        type: string
+        description: The name of the room.
+      description:
+        type: string
+        description: The description of the room.
+      available:
+        type: boolean
+        description: The availability of the room.
+      cost:
+        type: number
+        description: The cost of the room.
+      roomType:
+        type: string
+        description: The type of the room.

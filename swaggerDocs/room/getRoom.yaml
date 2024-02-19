@@ -1,0 +1,76 @@
+paths:
+  /api/v1/rooms/{roomId}:
+    get:
+      summary: Get room by ID
+      description: Retrieve room details by its unique ID.
+      tags:
+        - Room
+      parameters:
+        - in: path
+          name: roomId
+          required: true
+          description: The unique ID of the room to retrieve.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Room details retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates if the retrieval was successful.
+                    example: true
+                  data:
+                    $ref: '#/definitions/Room'
+                    description: The room object.
+        '400':
+          description: Bad request - Invalid room ID
+          content:
+            application/json:
+              example:
+                success: false
+                error: Invalid room ID provided.
+        '404':
+          description: Room not found
+          content:
+            application/json:
+              example:
+                success: false
+                error: Room not found.
+        '422':
+          description: Failed to fetch room
+          content:
+            application/json:
+              example:
+                success: false
+                error: An error occurred while fetching the room.
+
+definitions:
+  Room:
+    type: object
+    properties:
+      _id:
+        type: string
+        description: The unique identifier of the room.
+      hotel:
+        $ref: '#/definitions/Hotel'
+        description: The hotel associated with the room.
+      name:
+        type: string
+        description: The name of the room.
+      description:
+        type: string
+        description: The description of the room.
+      available:
+        type: boolean
+        description:  Availability of the room.
+      cost:
+        type: number
+        description: The cost of the room.
+      roomType:
+        type: string
+        description: The type of the room.

@@ -1,0 +1,99 @@
+paths:
+  /api/v1/hotels/{hotelId}/:
+    patch:
+      summary: Update hotel details
+      description: Update an existing hotel based on the provided details.
+      tags:
+        -   Hotel
+      parameters:
+        - name: hotelId
+          in: path
+          description: ID of the hotel to be updated
+          required: true
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/HotelInput'
+      responses:
+        '200':
+          description: Hotel updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates if the hotel was updated successfully.
+                    example: true
+                  hotel:
+                    $ref: '#/definitions/HotelResponse'
+                    description: The updated hotel object.
+                  message:
+                    type: string
+                    description: A message indicating the success of the update.
+                    example: Hotel updated successfully
+        '400':
+          description: Hotel with the same name already exists.
+          content:
+            application/json:
+              example:
+                success: false
+                error: Hotel with the same name already exists
+        '404':
+          description: Not Found - Hotel not found
+          content:
+            application/json:
+              example:
+                success: false
+                error: Hotel not found
+        '422':
+          description: Failed to update hotel
+          content:
+            application/json:
+              example:
+                success: false
+                error: Failed to update hotel
+
+definitions:
+  HotelInput:
+    type: object
+    properties:
+      name:
+        type: string
+        minLength: 3
+        maxLength: 50
+      description:
+        type: string
+        minLength: 3
+        maxLength: 300
+      createdBy: 
+        type: string
+      address:
+        type: string
+
+  HotelResponse:
+    type: object
+    properties:
+      hotel:
+        $ref: '#/definitions/Hotel'
+      message:
+        type: string
+
+  Hotel:
+    type: object
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+      createdBy: 
+        type: string
+        description: The user ID that added the hotel
+      address:
+        type: string

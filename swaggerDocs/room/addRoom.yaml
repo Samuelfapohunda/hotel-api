@@ -1,0 +1,92 @@
+paths:
+  /api/v1/hotels/{hotelId}/rooms:
+    post:
+      summary: Add Room
+      description: Add a new room associated for a gotel.
+      tags:
+        - Room
+      parameters:
+        - in: path
+          name: hotelId
+          required: true
+          schema:
+            type: string
+          description: The ID of the hotel to which the room will be associated.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/RoomInput'
+      responses:
+        '201':
+          description: Room added successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates if the room creation was successful.
+                    example: true
+                  data:
+                    $ref: '#/definitions/RoomResponse'
+                    description: The created room object.
+                  message:
+                    type: string
+                    description: A message indicating the success of the room creation.
+                    example: Room added successfully
+        '404':
+          description: Hotel not found.
+          content:
+            application/json:
+              example:
+                success: false
+                error: Hotel not found
+        '422':
+          description: Unprocessable Entity. Failed to add the room.
+          content:
+            application/json:
+              example:
+                success: false
+                error: Failed to add room
+
+definitions:
+  RoomInput:
+    type: object
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      available:
+        type: boolean
+      cost:
+        type: number
+      roomType:
+        type: string
+
+  RoomResponse:
+    type: object
+    properties:
+      room:
+        $ref: '#/definitions/Room'
+      message:
+        type: string
+
+  Room:
+    type: object
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+      available:
+        type: boolean
+      cost:
+        type: number
+      roomType:
+        type: string

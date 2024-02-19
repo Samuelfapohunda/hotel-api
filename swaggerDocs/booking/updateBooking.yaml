@@ -1,0 +1,76 @@
+paths:
+  /api/v1/bookings/{bookingId}:
+    patch:
+      summary: Update booking details for a room 
+      description: Update an existing booking for a room.
+      tags:
+        - Booking
+      parameters:
+        - in: path
+          name: bookingId
+          required: true
+          schema:
+            type: string
+          description: The ID of the booking to update.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+      responses:
+        '200':
+          description: booking updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates if the update was successful.
+                    example: true
+                  booking:
+                    $ref: '#/definitions/Booking'
+                    description: The updated booking object.
+                  message:
+                    type: string
+                    description: A message indicating the success of the update.
+                    example: Booking updated successfully
+        '404':
+          description: Booking or Room not found.
+          content:
+            application/json:
+              example:
+                success: false
+                error: Booking not found
+        '422':
+          description: Failed to update booking.
+          content:
+            application/json:
+              example:
+                success: false
+                error: Failed to update booking
+
+definitions:
+  Booking:
+    type: object
+    properties:
+      _id:
+        type: string
+      room:
+        type: string
+      checkInDate:
+        type: string
+        format: date
+      checkOutDate:
+        type: string
+        format: date
+      guestName:
+        type: string
+      guestEmail:
+        type: string
+      

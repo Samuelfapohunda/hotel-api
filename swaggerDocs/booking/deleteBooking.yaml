@@ -1,0 +1,36 @@
+paths:
+  /api/v1/bookings/{bookingId}:
+    delete:
+      summary: Delete a booking for a room
+      description: Delete a booking in a room by its ID.
+      tags:
+        - Booking
+      parameters:
+        - name: bookingId
+          in: path
+          required: true
+          description: The ID of the booking to be deleted.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: booking deleted successfully.
+          content:
+            application/json:
+              example:
+                success: true
+                message: booking deleted successfully
+        '404':
+          description: Booking not found.
+          content:
+            application/json:
+              example:
+                success: false
+                error: Booking not found
+        '422':
+          description: Failed to delete booking.
+          content:
+            application/json:
+              example:
+                success: false
+                error: Failed to delete booking

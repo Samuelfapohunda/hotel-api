@@ -1,0 +1,85 @@
+paths:
+  /api/v1/hotels:
+    post:
+      summary: Add a new hotel
+      description: Add a new hotel based on the provided details.
+      tags:
+        - Hotel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/HotelInput'
+      responses:
+        '201':
+          description: Hotel added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates if the request was successful.
+                    example: true
+                  hotel:
+                    $ref: '#/definitions/HotelResponse'
+                    description: The newly added hotel.
+                  message:
+                    type: string
+                    description: A message indicating the success.
+        '400':
+          description: Bad request - Invalid hotel data provided
+          content:
+            application/json:
+              example:
+                success: false
+                error: Invalid hotel data provided.
+        '422':
+          description: Failed to add hotel
+          content:
+            application/json:
+              example:
+                success: false
+                error: An error occurred while adding the hotel.
+
+definitions:
+  HotelInput:
+    type: object
+    properties:
+      name:
+        type: string
+        minLength: 3
+        maxLength: 50
+      description:
+        type: string
+        minLength: 3
+        maxLength: 300
+      createdBy: 
+        type: string
+      address:
+        type: string
+
+  HotelResponse:
+    type: object
+    properties:
+      hotel:
+        $ref: '#/definitions/Hotel'
+      message:
+        type: string
+
+  Hotel:
+    type: object
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+      createdBy: 
+        type: string
+        description: The user ID that added the hotel
+      address:
+        type: string

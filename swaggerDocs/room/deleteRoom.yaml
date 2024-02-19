@@ -1,0 +1,36 @@
+paths:
+  /api/v1/rooms/{roomId}:
+    delete:
+      summary: Delete Room in an hotel
+      description: Delete a room in a hotel by its ID.
+      tags:
+        - Room
+      parameters:
+        - name: roomId
+          in: path
+          required: true
+          description: The ID of the room to be deleted.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Room deleted successfully.
+          content:
+            application/json:
+              example:
+                success: true
+                message: Room deleted successfully
+        '404':
+          description: Room not found.
+          content:
+            application/json:
+              example:
+                success: false
+                error: Room not found
+        '422':
+          description: Failed to delete room.
+          content:
+            application/json:
+              example:
+                success: false
+                error: Failed to delete room

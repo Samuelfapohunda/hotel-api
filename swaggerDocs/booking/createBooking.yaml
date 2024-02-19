@@ -1,0 +1,86 @@
+paths:
+  /api/v1/rooms/{roomId}/bookings:
+    post:
+      summary: Create booking
+      description: Create a new booking associated with a room.
+      tags:
+        - Booking
+      parameters:
+        - in: path
+          name: roomId
+          required: true
+          schema:
+            type: string
+          description: The ID of the room to which the booking will be associated.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/BookingInput'
+      responses:
+        '201':
+          description: Booking created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates if the booking creation was successful.
+                    example: true
+                  data:
+                    $ref: '#/definitions/BookingResponse'
+                    description: The created booking object.
+                  message:
+                    type: string
+                    description: A message indicating the success of the booking creation.
+                    example: Booking created successfully
+        '404':
+          description: Room not found.
+          content:
+            application/json:
+              example:
+                success: false
+                error: Room not found
+        '422':
+          description: Unprocessable Entity. Failed to create the booking.
+          content:
+            application/json:
+              example:
+                success: false
+                error: Failed to create booking
+
+definitions:
+  BookingInput:
+    type: object
+    properties:
+      text:
+        type: string
+      createdBy:
+        type: string
+      
+
+  BookingResponse:
+    type: object
+    properties:
+      booking:
+        $ref: '#/definitions/Booking'
+      message:
+        type: string
+
+
+  Booking:
+    type: object
+    properties:
+      _id:
+        type: string
+      text:
+        type: string
+      createdBy:
+        type: string
+        description: The user ID that created the booking
+      createdAt:
+        type: string
+        format: date

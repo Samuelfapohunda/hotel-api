@@ -1,0 +1,55 @@
+paths:
+  /api/v1/bookings:
+    get:
+      summary: Get all bookingd
+      description: Retrieve all bookings
+      tags:
+        - Booking
+      security: []
+      responses:
+        '200':
+          description: Successfully retrieved all bookings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates if the request was successful.
+                    example: true
+                  count:
+                    type: integer
+                    description: The number of bookings in the response.
+                    example: 5
+                  rooms:
+                    type: array
+                    items:
+                      $ref: '#/definitions/Booking'
+                    description: An array containing booking objects.
+        '422':
+          description: An error occurred while fetching all bookings
+          content:
+            application/json:
+              example:
+                success: false
+                error: Failed to fetch all bookings
+
+definitions:
+  Booking:
+    type: object
+    properties:
+      _id:
+        type: string
+      room:
+        type: string
+      checkInDate:
+        type: string
+        format: date
+      checkOutDate:
+        type: string
+        format: date
+      guestName:
+        type: string
+      guestEmail:
+        type: string

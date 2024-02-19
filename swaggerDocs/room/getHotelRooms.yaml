@@ -1,0 +1,65 @@
+paths:
+  /api/v1/rooms/hotels/{hotelId}:
+    get:
+      summary: Get hotel rooms
+      description: Retrieve rooms associated with a specific hotel.
+      tags:
+        - Room
+      parameters:
+        - in: path
+          name: HotelId
+          required: true
+          type: string
+          description: The ID of the hotel to retrieve rooms for.
+      responses:
+        '200':
+          description: Successfully retrieved hotel rooms.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates if the operation was successful.
+                    example: true
+                  count:
+                    type: integer
+                    description: The number of rooms associated with the hotel.
+                    example: 3
+                  data:
+                    type: array
+                    description: An array of room objects associated with the hotel.
+                    items:
+                      $ref: '#/definitions/Room'
+        '404':
+          description: Hotel not found.
+          content:
+            application/json:
+              example:
+                success: false
+                error: Hotel not found
+        '422':
+          description: Failed to retrieve hotel rooms.
+          content:
+            application/json:
+              example:
+                success: false
+                error: Failed to retrieve hotel rooms
+
+definitions:
+  Room:
+    type: object
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+      available:
+        type: boolean
+      cost:
+        type: number
+      roomType:
+        type: string

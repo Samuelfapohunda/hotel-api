@@ -1,0 +1,52 @@
+paths:
+  /api/v1/hotels:
+    get:
+      summary: Get a list of all hotels
+      description: Retrieve all hotels
+      tags:
+        - Hotel
+      security: []
+      responses:
+        '200':
+          description: Successfully retrieved all hotels
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates if the request was successful.
+                    example: true
+                  count:
+                    type: integer
+                    description: The number of hotels in the response.
+                    example: 5
+                  hotels:
+                    type: array
+                    items:
+                      $ref: '#/definitions/Hotel'
+                    description: An array containing hotel objects.
+        '422':
+          description: An error occurred while fetching hotels
+          content:
+            application/json:
+              example:
+                success: false
+                error: Failed to fetch all hotels
+
+definitions:
+  Hotel:
+    type: object
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+      createdBy: 
+        type: string
+        description: The user ID that added the hotel
+      address:
+        type: string

@@ -1,0 +1,53 @@
+paths:
+  /api/v1/rooms:
+    get:
+      summary: Get all rooms
+      description: Retrieve all rooms
+      tags:
+        - Room
+      security: []
+      responses:
+        '200':
+          description: Successfully retrieved all rooms
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates if the request was successful.
+                    example: true
+                  count:
+                    type: integer
+                    description: The number of rooms in the response.
+                    example: 5
+                  rooms:
+                    type: array
+                    items:
+                      $ref: '#/definitions/Room'
+                    description: An array containing room objects.
+        '422':
+          description: An error occurred while fetching rooms
+          content:
+            application/json:
+              example:
+                success: false
+                error: Failed to fetch all rooms
+
+definitions:
+  Room:
+    type: object
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+      available:
+        type: boolean
+      cost:
+        type: number
+      roomType:
+        type: string

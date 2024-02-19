@@ -1,0 +1,65 @@
+paths:
+  /api/v1/hotels/{hotelId}:
+    get:
+      summary: Get a single hotel
+      description: Retrieve a hotel by its ID.
+      tags:
+        - Hotel
+      parameters:
+        - name: hotelId
+          in: path
+          description: ID of the hotel to retrieve
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successfully retrieved hotel
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates if the request was successful.
+                    example: true
+                  hotels:
+                    items:
+                      $ref: '#/definitions/Hotel'
+        '400':
+          description: Bad request - Invalid hotel ID
+          content:
+            application/json:
+              example:
+                success: false
+                error: Invalid hotel ID provided.
+        '404':
+          description: Hotel not found
+          content:
+            application/json:
+              example:
+                success: false
+                error: Hotel not found.
+        '422':
+          description: Failed to fetch hotel
+          content:
+            application/json:
+              example:
+                success: false
+                error: An error occurred while fetching the hotel.
+
+definitions:
+  Hotel:
+    type: object
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+      createdBy: 
+        type: string
+        description: The user ID that added the hotel
+      address:
+        type: string
